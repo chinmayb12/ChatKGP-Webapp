@@ -781,6 +781,7 @@ class MessagesView extends React.Component {
   }
 
   handleFormResponse(action, text, data) {
+    console.log("Text in form response",text);
     if (action == 'pub') {
       this.sendMessage(Drafty.attachJSON(Drafty.parse(text), data));
     } else if (action == 'url') {

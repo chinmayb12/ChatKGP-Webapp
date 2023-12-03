@@ -84,7 +84,7 @@ fbMessaging.onBackgroundMessage(payload => {
   if (title) {
     const options = {
       body: payload.data.content || '', // TODO: content for 'sub' should be topic's or user's title.
-      icon: '/img/logo96.png', // TODO: use topic's or user's avatar (would have to fetch for 'sub', read from db for 'msg').
+      icon: '/img/IIT_Kharagpur_Logo92.png', // TODO: use topic's or user's avatar (would have to fetch for 'sub', read from db for 'msg').
       badge: '/img/badge96.png',
       tag: payload.data.topic || undefined,
       data: {

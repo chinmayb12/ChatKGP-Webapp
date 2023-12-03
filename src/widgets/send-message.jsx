@@ -78,6 +78,7 @@ class SendMessage extends React.PureComponent {
     this.handleAttachFile = this.handleAttachFile.bind(this);
     this.handleAttachAudio = this.handleAttachAudio.bind(this);
     this.handleSend = this.handleSend.bind(this);
+    this.handleSendPrivate = this.handleSendPrivate.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleMessageTyping = this.handleMessageTyping.bind(this);
     this.handleDropAttach = this.handleDropAttach.bind(this);
@@ -232,6 +233,16 @@ class SendMessage extends React.PureComponent {
     }
   }
 
+  handleSendPrivate(e) {
+    e.preventDefault();
+    const message = this.state.message.trim();
+    if (message || this.props.acceptBlank || this.props.noInput) {
+      const privmessage = message + '' + '[private]';
+      this.props.onSendMessage(privmessage);
+      this.setState({message: ''});
+    }
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const prompt = this.props.disabled ?
@@ -268,6 +279,8 @@ class SendMessage extends React.PureComponent {
                 </>
                 :
                 null}
+              {/* Private Message Button */}
+              {/* Existing code for text area and send button */}
               {this.props.noInput ?
                 (quote || <div className="hr thin" />) :
                 (this.state.audioRec ?
@@ -282,10 +295,16 @@ class SendMessage extends React.PureComponent {
                     value={this.state.message} onChange={this.handleMessageTyping}
                     onKeyDown={this.handleKeyPress}
                     ref={ref => {this.messageEditArea = ref;}} />)}
-              {this.state.message || !audioEnabled ?
-                <a href="#" onClick={this.handleSend} title={formatMessage(messages.icon_title_send)}>
-                  <i className="material-icons">{sendIcon}</i>
-                </a> :
+              {this.state.message || !audioEnabled ? (
+                  <React.Fragment>
+                    <a href="#" onClick={this.handleSend} title={formatMessage(messages.icon_title_send)}>
+                      <i className="material-icons">{sendIcon}</i>
+                    </a>
+                    <a href="#" onClick={this.handleSendPrivate} title="Send Private Message">
+                      <i className="material-icons">lock</i>
+                    </a>
+                  </React.Fragment>
+                ):
                 !this.state.audioRec ?
                   <a href="#" onClick={e => {e.preventDefault(); this.setState({audioRec: true})}} title={formatMessage(messages.icon_title_record_voice)}>
                     <i className="material-icons">mic</i>

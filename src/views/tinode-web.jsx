@@ -1054,6 +1054,8 @@ class TinodeWeb extends React.Component {
   //  - head - head dictionary to be attached to the message
   handleSendMessage(msg, uploadCompletionPromise, uploader, head) {
     const topic = this.tinode.getTopic(this.state.topicSelected);
+    console.log("Sending message to", this.state.topicSelected, "with uploader", uploader);
+    console.log("Message", msg);
     /* TODO: check if return is required */
     return this.sendMessageToTopic(topic, msg, uploadCompletionPromise, uploader, head);
   }

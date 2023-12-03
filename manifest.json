@@ -5,12 +5,12 @@
   "categories": ["chat", "communication", "productivity"],
   "icons": [
     {
-      "src":"img/logo96.png",
-      "sizes": "96x96",
+      "src":"img/IIT_Kharagpur_Logo92.png",
+      "sizes": "92x92",
       "type": "image/png"
     },
     {
-      "src":"img/logo192.png",
+      "src":"img/IIT_Kharagpur_Logo192.png",
       "sizes": "192x192",
       "type": "image/png"
     },

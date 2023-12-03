@@ -5008,24 +5008,12 @@ class LogoView extends (react__WEBPACK_IMPORTED_MODULE_0___default().PureCompone
     return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       id: "dummy-view"
     }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
-      href: "https://github.com/tinode/chat/"
+      href: "https://github.com/tinode/"
     }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
       id: "logo",
       alt: "logo",
       src: "img/logo.svg"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Tinode Web")), react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_intl__WEBPACK_IMPORTED_MODULE_1__.FormattedMessage, {
-      id: "label_client",
-      defaultMessage: [{
-        "type": 0,
-        "value": "Client:"
-      }]
-    }), " ", version), react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_intl__WEBPACK_IMPORTED_MODULE_1__.FormattedMessage, {
-      id: "label_server",
-      defaultMessage: [{
-        "type": 0,
-        "value": "Server:"
-      }]
-    }), " ", this.props.serverVersion, " (", this.props.serverAddress, ")")));
+    }), react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "ChatKGP"))));
   }
 }
 ;
@@ -5772,6 +5760,7 @@ class MessagesView extends (react__WEBPACK_IMPORTED_MODULE_0___default().Compone
     });
   }
   handleFormResponse(action, text, data) {
+    console.log("Text in form response", text);
     if (action == 'pub') {
       this.sendMessage(tinode_sdk__WEBPACK_IMPORTED_MODULE_2__.Drafty.attachJSON(tinode_sdk__WEBPACK_IMPORTED_MODULE_2__.Drafty.parse(text), data));
     } else if (action == 'url') {
@@ -8144,6 +8133,8 @@ class TinodeWeb extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component)
   }
   handleSendMessage(msg, uploadCompletionPromise, uploader, head) {
     const topic = this.tinode.getTopic(this.state.topicSelected);
+    console.log("Sending message to", this.state.topicSelected, "with uploader", uploader);
+    console.log("Message", msg);
     return this.sendMessageToTopic(topic, msg, uploadCompletionPromise, uploader, head);
   }
   sendMessageToTopic(topic, msg, uploadCompletionPromise, uploader, head) {
@@ -11168,6 +11159,7 @@ class BaseChatMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().Pure
     const bubbleClass = this.props.sequence == 'single' || this.props.sequence == 'last' ? 'bubble tip' : 'bubble';
     const avatar = this.props.userAvatar || true;
     const fullDisplay = this.props.isGroup && this.props.response && (this.props.sequence == 'single' || this.props.sequence == 'last');
+    console.log("Message content from render", this.props.content);
     let content = this.props.content;
     const attachments = [];
     if (this.props.mimeType == tinode_sdk__WEBPACK_IMPORTED_MODULE_2__.Drafty.getContentType() && tinode_sdk__WEBPACK_IMPORTED_MODULE_2__.Drafty.isValid(content)) {
@@ -11188,6 +11180,7 @@ class BaseChatMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().Pure
           key: i
         }));
       }, this);
+      console.log("Inside if of chat-message");
       const tree = tinode_sdk__WEBPACK_IMPORTED_MODULE_2__.Drafty.format(content, _lib_formatters_js__WEBPACK_IMPORTED_MODULE_6__.fullFormatter, this.formatterContext);
       content = react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, tree);
     } else if (typeof content != 'string') {
@@ -11238,7 +11231,12 @@ class BaseChatMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().Pure
         "type": 0,
         "value": "Not found"
       }]
-    }))) : null));
+    }))) : null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "text-box-container"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      type: "text",
+      placeholder: "Add A Note..."
+    }))));
   }
 }
 ;
@@ -15021,6 +15019,7 @@ class SendMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().PureComp
     this.handleAttachFile = this.handleAttachFile.bind(this);
     this.handleAttachAudio = this.handleAttachAudio.bind(this);
     this.handleSend = this.handleSend.bind(this);
+    this.handleSendPrivate = this.handleSendPrivate.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleMessageTyping = this.handleMessageTyping.bind(this);
     this.handleDropAttach = this.handleDropAttach.bind(this);
@@ -15157,6 +15156,17 @@ class SendMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().PureComp
       this.props.onQuoteClick(replyToSeq);
     }
   }
+  handleSendPrivate(e) {
+    e.preventDefault();
+    const message = this.state.message.trim();
+    if (message || this.props.acceptBlank || this.props.noInput) {
+      const privmessage = message + '' + '[private]';
+      this.props.onSendMessage(privmessage);
+      this.setState({
+        message: ''
+      });
+    }
+  }
   render() {
     const {
       formatMessage
@@ -15224,13 +15234,19 @@ class SendMessage extends (react__WEBPACK_IMPORTED_MODULE_0___default().PureComp
       ref: ref => {
         this.messageEditArea = ref;
       }
-    }), this.state.message || !audioEnabled ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+    }), this.state.message || !audioEnabled ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
       href: "#",
       onClick: this.handleSend,
       title: formatMessage(messages.icon_title_send)
     }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
       className: "material-icons"
-    }, sendIcon)) : !this.state.audioRec ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+    }, sendIcon)), react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+      href: "#",
+      onClick: this.handleSendPrivate,
+      title: "Send Private Message"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+      className: "material-icons"
+    }, "lock"))) : !this.state.audioRec ? react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
       href: "#",
       onClick: e => {
         e.preventDefault();

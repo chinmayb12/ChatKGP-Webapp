@@ -89,6 +89,8 @@ class BaseChatMessage extends React.PureComponent {
   handleContextClick(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    // console.log("Message content", this.props.content);
     const menuItems = [];
     if (this.props.received == Tinode.MESSAGE_STATUS_FAILED) {
       menuItems.push('menu_item_send_retry');
@@ -151,6 +153,7 @@ class BaseChatMessage extends React.PureComponent {
     const fullDisplay = (this.props.isGroup && this.props.response &&
       (this.props.sequence == 'single' || this.props.sequence == 'last'));
 
+    console.log("Message content from render", this.props.content);
     let content = this.props.content;
     const attachments = [];
     if (this.props.mimeType == Drafty.getContentType() && Drafty.isValid(content)) {
@@ -172,6 +175,7 @@ class BaseChatMessage extends React.PureComponent {
           onError={this.props.onError}
           key={i} />);
       }, this);
+      console.log("Inside if of chat-message");
       const tree = Drafty.format(content, fullFormatter, this.formatterContext);
       content = React.createElement(React.Fragment, null, tree);
     } else if (typeof content != 'string') {
@@ -224,6 +228,11 @@ class BaseChatMessage extends React.PureComponent {
             </div>
             : null
           }
+          {/*Text box below each message*/}
+          <div className="text-box-container">
+            <input type="text" placeholder="Add A Note..." />
+            {/* Add any necessary event handlers or props for sending messages */}
+          </div>
         </div>
       </li>
     );
